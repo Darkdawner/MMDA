@@ -410,8 +410,8 @@ class MMDA(nn.Module):
                                         valids[:, self.kpt_paf_num::2], tmp_labels_xz)
                     tmp_loss_3d_yz = loss3d_2(outputs['heatmap_3d_yz'][i][j],
                                         valids[:, self.kpt_paf_num+1::2], tmp_labels_yz)
-                    tmp_loss_hm = losshm_2(outputs['heatmap_2d'][i][j][:,:self.keypoint_num], outputs['heatmap_3d'][i][j],
-                                        valids[:,self.kpt_paf_num::2])
+                    tmp_loss_hm = losshm_2(tmp_labels_2d[:,:self.keypoint_num], outputs['heatmap_3d_xz'][i][j],
+                                        outputs['heatmap_3d_yz'][i][j], GAUSSIAN_KERNELS[ind])
                 else:
                     tmp_loss_2d = loss2d_1(outputs['heatmap_2d'][i][j],
                                         valids[:, :self.kpt_paf_num], tmp_labels_2d)
@@ -419,8 +419,9 @@ class MMDA(nn.Module):
                                         valids[:, self.kpt_paf_num::2], tmp_labels_xz)
                     tmp_loss_3d_yz = loss3d_1(outputs['heatmap_3d_yz'][i][j],
                                         valids[:, self.kpt_paf_num+1::2], tmp_labels_yz)
-                    tmp_loss_hm = losshm_1(outputs['heatmap_2d'][i][j][:,:self.keypoint_num], outputs['heatmap_3d'][i][j],
-                                        valids[:,self.kpt_paf_num::2])
+                    tmp_loss_hm = losshm_1(tmp_labels_2d[:,:self.keypoint_num], outputs['heatmap_3d_xz'][i][j],
+                                        outputs['heatmap_3d_yz'][i][j], GAUSSIAN_KERNELS[ind])
+
                 
                 if j == 3:
                     loss_2d += tmp_loss_2d
